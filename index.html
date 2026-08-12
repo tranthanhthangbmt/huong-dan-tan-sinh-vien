@@ -29,13 +29,15 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            background-color: #349834;
-            color: white;
-            border-bottom: 5px solid white;
+            background-color: white;
+            color: #349834;
+            border-bottom: 5px solid #349834;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
         }
 
         header img.logo {
-            width: 100px;
+            width: 200px;
             height: auto;
             margin-right: 20px;
         }
@@ -43,6 +45,7 @@
         header h1 {
             margin: 0;
             font-size: 1.8em;
+            text-transform: uppercase;
         }
         
         /* --- Tab System (Sticky) --- */
@@ -51,13 +54,34 @@
             top: 0;
             z-index: 1000;
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             gap: 10px;
             justify-content: flex-start;
             border-bottom: 1px solid #ccc;
             background-color: #f1f1f1;
             padding: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            
+            /* Tuỳ chỉnh thanh cuộn ngang */
+            scrollbar-width: thin;
+            scrollbar-color: #ccc #f1f1f1;
+        }
+
+        .tab-buttons::-webkit-scrollbar {
+            height: 6px; /* Chiều cao thanh cuộn */
+        }
+        .tab-buttons::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
+        .tab-buttons::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 5px;
+        }
+        .tab-buttons::-webkit-scrollbar-thumb:hover {
+            background: #aaa;
         }
 
         /* --- Individual Tab Buttons --- */
@@ -70,7 +94,8 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
             font-size: 0.9em;
-            flex: 1 1 auto;
+            flex: 0 0 auto;
+            white-space: nowrap;
             min-width: 120px;
             text-align: center;
             border-radius: 5px;
@@ -221,6 +246,26 @@
         .copy-tooltip.show {
             opacity: 1;
         }
+
+        /* --- Table Styles --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #349834;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
     </style>
 
     <script>
@@ -283,6 +328,37 @@
                 link.parentNode.insertBefore(btn, link.nextSibling);
             }
         });
+
+        // --- Drag to scroll cho thanh tab (dành cho dùng chuột trên máy tính) ---
+        var slider = document.querySelector('.tab-buttons');
+        var isDown = false;
+        var startX;
+        var scrollLeft;
+
+        if (slider) {
+            slider.style.cursor = 'grab';
+            slider.addEventListener('mousedown', function(e) {
+                isDown = true;
+                slider.style.cursor = 'grabbing';
+                startX = e.pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+            });
+            slider.addEventListener('mouseleave', function() {
+                isDown = false;
+                slider.style.cursor = 'grab';
+            });
+            slider.addEventListener('mouseup', function() {
+                isDown = false;
+                slider.style.cursor = 'grab';
+            });
+            slider.addEventListener('mousemove', function(e) {
+                if (!isDown) return;
+                e.preventDefault();
+                var x = e.pageX - slider.offsetLeft;
+                var walk = (x - startX) * 1.5; // Tốc độ cuộn
+                slider.scrollLeft = scrollLeft - walk;
+            });
+        }
       });
     </script>
 </head>
@@ -290,7 +366,7 @@
 
     <div class="container">
         <header>
-            <img src="img/logo_small.png" alt="Logo Đại học Đông Á" class="logo">
+            <img src="img/LOGO_UDA_2023_VN_EN_chuan2.png" alt="Logo Đại học Đông Á" class="logo">
             <h1>HƯỚNG DẪN TÂN SINH VIÊN</h1>
         </header>
 
@@ -302,12 +378,25 @@
                 <button class="tab-link" onclick="openTab(event, 'Tab4')">3: Đăng Ký Giấy Tờ</button>
                 <button class="tab-link" onclick="openTab(event, 'Tab5')">4: Zalo & Fanpage</button>
                 <button class="tab-link" onclick="openTab(event, 'Tab6')">5: Xác Nhận NH</button>
+                <button class="tab-link" onclick="openTab(event, 'Tab7')">6: Mốc Thời Gian</button>
             </div>
 
             <div class="tab-content-area">
                 <div id="Tab1" class="tab-content" style="display: block;">
                     <h2>Thông Tin Đăng Nhập Mặc Định</h2>
-                    <p>Sinh viên truy cập website theo IDSV và mật khẩu mặc định:</p>
+                    
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 30px; margin: 20px 0; padding: 20px; background-color: #e8f5e9; border: 2px dashed #4caf50; border-radius: 8px; flex-wrap: wrap;">
+                        <div style="text-align: center;">
+                            <p style="margin: 0 0 10px 0; font-weight: bold; color: #2e7d32;">Quét QR để xem hướng dẫn trên điện thoại</p>
+                            <img src="img/QR_link.png" alt="Mã QR Hướng Dẫn" style="width: 130px; height: 130px; border: 1px solid #ccc; border-radius: 5px; padding: 5px; background-color: white;">
+                        </div>
+                        <div style="text-align: center;">
+                            <a href="https://shorturl.at/Q9bEo" target="_blank" style="display: inline-block; background-color: #e91e63; color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-size: 1.2em; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">👉 Truy Cập Nhanh Trang Đăng Nhập Tại Đây 👈</a>
+                            <p style="margin-top: 10px; margin-bottom: 0; font-size: 1em;">Link rút gọn: <a href="https://shorturl.at/Q9bEo" target="_blank">https://shorturl.at/Q9bEo</a></p>
+                        </div>
+                    </div>
+
+                    <p>Sinh viên đăng nhập theo IDSV và mật khẩu mặc định:</p>
                     <ul>
                         <li><strong>IDSV (Mã số sinh viên):</strong> Có trên phiếu thu học phí.</li>
                         <li><strong>Mật khẩu mặc định:</strong> ngày/tháng/năm sinh.</li>
@@ -333,7 +422,7 @@
                     </ul>
 
                     <h3>Các Phần Khảo Sát:</h3>
-                    <p>Khảo sát gồm 5 phần chính. Bạn hãy thực hiện lần lượt từng phần theo hướng dẫn sau:</p>
+                    <p>Khảo sát gồm 4 phần chính. Bạn hãy thực hiện lần lượt từng phần theo hướng dẫn sau:</p>
 
                     <h4>Phần 1: Về Năng Khiếu Để Tham Gia Các Câu Lạc Bộ</h4>
                     <p>Để giúp sinh viên có sân chơi thể hiện tài năng và phát huy năng khiếu, tạo niềm vui, hứng khởi trong học tập, bạn hãy chọn và mô tả các năng khiếu của mình trong phần này.</p>
@@ -351,23 +440,7 @@
                     <p>Ở phần này, bạn hãy đánh số thứ tự từ 1 đến 3 cho ba kênh thông tin giúp bạn biết đến trường Đại học Đông Á, với 1 là kênh đầu tiên bạn biết đến. Các ô còn lại hãy để trống.</p>
                     <img src="img/img_ks_p4.PNG" alt="Ảnh minh họa Phần 4 Khảo sát">
                     
-                    <h4>Phần 5: Ngoại Ngữ</h4>
-                    <p>
-                        Ngoài năng lực chuyên môn, ngoại ngữ là yếu tố quan trọng giúp sinh viên nổi bật trước nhà tuyển dụng. Vì vậy, sinh viên các ngành không chuyên ngữ nên ưu tiên học ngoại ngữ trong 1-2 năm đầu để rèn luyện kỹ năng và mở rộng cơ hội thực tập, làm việc trong và ngoài nước. Tại Phân hiệu Đại học Đông Á ở Đắk Lắk, nhà trường khuyến khích sinh viên nên chọn học <strong>tiếng Anh</strong> và <strong>tiếng Nhật</strong>, vì hai ngôn ngữ này mang lại nhiều cơ hội thực tập và làm việc tại nước ngoài sau này.
-                    </p>
-                    <p>
-                        Nhà trường sẽ tổ chức khảo sát ngoại ngữ đầu vào nhằm đánh giá năng lực thực tế của từng sinh viên. Kết quả khảo sát sẽ được dùng để xếp lớp phù hợp với năng lực của bạn, tạo môi trường học tập hiệu quả.
-                    </p>
-                    <p>
-                        Lệ phí khảo sát là <strong>miễn phí</strong>. Bài khảo sát bao gồm 40 câu hỏi trắc nghiệm trong vòng 30 phút. Sinh viên có thể chọn tham gia vào một trong các buổi khảo sát sau: <strong>sáng hoặc chiều 04/09</strong> và <strong>sáng hoặc chiều 05/09</strong>.
-                    </p>
-                    <p>
-                        Sau khi chọn thời gian, hãy quét mã QR để tham gia vào nhóm Zalo của trung tâm ngoại ngữ để nhận được hướng dẫn cụ thể. Trung tâm sẽ dựa vào số lượng sinh viên trong nhóm để tổ chức khảo sát trực tiếp tại Phân hiệu.
-                    </p>
-                    <p>
-                        Đối với những sinh viên đã có chứng chỉ ngoại ngữ quốc tế, bạn vẫn có thể nộp chứng chỉ đó cho nhà trường để được xét miễn giảm các học phần ngoại ngữ không chuyên. 
-                    </p>                    
-                    <img src="img/img_ks_p5.PNG" alt="Ảnh minh họa Phần 5 Khảo sát">
+
                     
                     <p>Cuối cùng, sau khi hoàn thành tất cả các phần, bạn hãy nhấn nút <strong>Lưu</strong> để hoàn thành.</p>
                 </div>
@@ -538,22 +611,153 @@
 					<p>Đây là bước bắt buộc để hoàn tất thủ tục nhập học tại <a href="https://thisinh.thitotnghiepthpt.edu.vn" target="_blank">https://thisinh.thitotnghiepthpt.edu.vn</a></p>
 					
 					<h3>Hướng dẫn xác nhận nhập học trực tuyến</h3>
-					<p>Để xác nhận nhập học, sinh viên truy cập vào Cổng thông tin của Bộ Giáo dục và Đào tạo, sau đó thực hiện các bước sau:</p>
 					<ol>
 						<li>
-							<strong>Đăng nhập:</strong> Tại trang đăng nhập, bạn cần điền đầy đủ thông tin vào các ô sau:
-							<ul>
-								<li><strong>Số CCCD/CMND/ĐDCN:</strong> Nhập số Căn cước công dân hoặc chứng minh thư của bạn.</li>
-								<li><strong>Mã đăng nhập:</strong> Nhập mã đăng nhập đã được cấp.</li>
-								<li><strong>Mã xác nhận:</strong> Nhập mã captcha hiển thị trên màn hình.</li>
-							</ul>
-							<img src="img/img_buoc5_dn.PNG" alt="Ảnh minh họa trang đăng nhập Cổng Bộ GD&ĐT">
+							<strong>Bước 1: Truy cập vào website</strong><br>
+							Thí sinh sử dụng trình duyệt để truy cập vào cổng thông tin tuyển sinh: <a href="http://thisinh.thitotnghiepthpt.edu.vn" target="_blank">http://thisinh.thitotnghiepthpt.edu.vn</a>. Đây là hệ thống chính thức do Bộ GD&ĐT quản lý.
+							<img src="img/img_xnnh_1.png" alt="Truy cập website cổng Bộ">
 						</li>
 						<li>
-							<strong>Xác nhận nhập học:</strong> Sau khi đăng nhập thành công, bạn sẽ được chuyển đến trang xác nhận nhập học. Tại đây, bạn tiến hành xác nhận và hoàn tất thủ tục theo hướng dẫn của hệ thống.
+							<strong>Bước 2: Điền số CMND, mã đăng nhập, mã xác nhận</strong><br>
+							Trên giao diện đăng nhập, thí sinh nhập đúng số CMND hoặc CCCD đã đăng ký trước đó. Sau đó, điền mã đăng nhập và mã xác nhận vào các ô tương ứng.
+							<img src="img/img_xnnh_2.png" alt="Điền thông tin đăng nhập">
+						</li>
+						<li>
+							<strong>Bước 3: Nhấn nút Đăng nhập để vào hệ thống của Bộ GD</strong><br>
+							Sau khi điền đầy đủ các thông tin cần thiết, thí sinh nhấn nút Đăng nhập để truy cập. Nếu thông tin đúng, bạn sẽ được đưa vào trang quản lý cá nhân.
+							<img src="img/img_xnnh_3.png" alt="Trang quản lý cá nhân">
+						</li>
+						<li>
+							<strong>Bước 4: Chọn Menu, chọn chức năng Tra cứu kết quả xét tuyển sinh</strong><br>
+							Tại giao diện chính, thí sinh tìm đến Menu nằm ở góc trên bên trái màn hình (hoặc biểu tượng ba gạch ngang trên điện thoại). Nhấn vào đó và chọn Tra cứu kết quả xét tuyển sinh.
+							<img src="img/img_xnnh_4.png" alt="Tra cứu kết quả">
+						</li>
+						<li>
+							<strong>Bước 5: Xem kết quả xét tuyển đại học 2026</strong><br>
+							Tại mục tra cứu, hệ thống sẽ hiển thị các nguyện vọng đã đăng ký và kết quả trúng tuyển tương ứng. Những nguyện vọng có kết quả 'Trúng tuyển' sẽ được đánh dấu rõ ràng.
+							<img src="img/img_xnnh_5.png" alt="Xem kết quả xét tuyển">
+						</li>
+						<li>
+							<strong>Bước 6: Nhấn vào biểu tượng Ghi ở mục Xác nhận nhập học</strong><br>
+							Ngay cạnh nguyện vọng trúng tuyển, hệ thống sẽ hiển thị biểu tượng Ghi hoặc Xác nhận. Thí sinh cần nhấn vào biểu tượng này để bắt đầu quy trình xác nhận nhập học.
+							<img src="img/img_xnnh_6.png" alt="Nhấn Xác nhận nhập học">
+						</li>
+						<li>
+							<strong>Bước 7: Chọn đồng ý để hoàn thành xác nhận nhập học</strong><br>
+							Sau khi nhấn vào biểu tượng Ghi, hệ thống sẽ hiển thị một hộp thoại xác nhận cuối cùng. Bạn cần chọn Đồng ý để hoàn tất quá trình xác nhận nhập học.<br>
+							<div class="note"><strong>Lưu ý:</strong> Việc xác nhận này chỉ được thực hiện một lần duy nhất. Vì vậy hãy chắc chắn rằng bạn muốn học tại trường đã chọn trước khi nhấn Đồng ý.</div>
+						</li>
+						<li>
+							<strong>Bước 8: Kiểm tra trạng thái nhập học ở mục Trạng thái</strong><br>
+							Sau khi hoàn tất, quay trở lại giao diện chính và kiểm tra mục Trạng thái của nguyện vọng. Nếu hiện dòng chữ 'Đã xác nhận nhập học', nghĩa là bạn đã hoàn tất thành công.
+							<img src="img/img_xnnh_7.png" alt="Trạng thái đã xác nhận">
 						</li>
 					</ol>
 				</div>
+
+                <div id="Tab7" class="tab-content">
+                    <h2>Các Mốc Thời Gian Đào Tạo Khóa 26</h2>
+                    <p>Chào mừng các Tân Sinh viên K26 đến với Đại học Đông Á! Dưới đây là các mốc thời gian quan trọng trong năm học 2026-2027 mà các bạn cần lưu ý:</p>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>TT</th>
+                                <th>Thời gian</th>
+                                <th>Nội dung công việc</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>13/8/2026 - 23/8/2026</td>
+                                <td><strong>Nhập học:</strong> SV nhập học trong thời gian <strong>trước 17h ngày 23/08/2026</strong> được cấp học bổng KHUYẾN HỌC <strong>06 triệu đồng</strong>, các học bổng TÀI NĂNG sẽ xét và trao tại Lễ Khai giảng</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>24/8/2026 - 28/08/2026</td>
+                                <td><strong>Lãnh đạo PH, GV, SV các khoa sinh hoạt với SV theo khối</strong> <em>(Môi trường học tập, tầm quan trọng của việc học ngoại ngữ, tin học, giới thiệu các CLB, giao lưu anh chị khóa trên)</em>
+                                    <ul style="margin-top: 10px; margin-bottom: 0;">
+                                        <li><strong>Sáng 24/8:</strong> Sinh hoạt với Khối Kinh tế và Khối Sức khỏe, đợt 1 – Hội trường Edison</li>
+                                        <li><strong>Sáng 25/8:</strong> Sinh hoạt với Khối Kỹ thuật và Khối Ngoại ngữ, đợt 1 – Hội trường Edison</li>
+                                        <li><strong>Sáng 26/8:</strong> Sinh hoạt với Khối Kinh tế và Khối Sức khỏe, đợt 2 – Hội trường Edison</li>
+                                        <li><strong>Sáng 27/8:</strong> Sinh hoạt với Khối Kỹ thuật và Khối Ngoại ngữ, đợt 2 – Hội trường Edison</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Chiều 24/8/2026 & Chiều 28/8/2026</td>
+                                <td><strong>Khảo sát phân lớp ngoại ngữ đầu vào để kịp nâng cao trong hai năm đầu:</strong> SV khảo sát trên máy tính và phần vấn đáp ngắn, theo lịch của TT Khảo thí & TT Ngoại ngữ</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>30/8/2026 - 3/9/2026</td>
+                                <td><strong>Nghỉ lễ Quốc Khánh (2/9)</strong></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Sáng 04/09 (Phòng học)</td>
+                                <td><strong>Buổi 1: Sinh viên gặp GV khoa và CVHT/Hỗ trợ CVHT.</strong> XD tình đồng môn từ buổi ban đầu, SV ai cũng vui cũng thích, tạo môi trường cảm thông giúp nhau học tập; ý thức được việc xây dựng hình ảnh “NGƯỜI CÙNG THỜI”, “NGƯỜI ĐỒNG MÔN”; hăng hái đăng ký tham gia CLB các Tổ học tập; am hiểu về văn hóa ĐHĐA và con đường thành công.</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Chiều 04/09 (Phòng học)</td>
+                                <td><strong>Buổi 2: Sinh viên gặp GV khoa và CVHT/Hỗ trợ CVHT.</strong> Khám phá PP lớp học đảo ngược và Canvas và nắm vững các quy định về quy chế học vụ.</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Sáng 05/09</td>
+                                <td><strong>Team building - Chương trình giao lưu gắn kết</strong></td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Chiều 05/09 (Online)</td>
+                                <td><strong>Buổi 3: Tổ chức lớp dạy 1 buổi online.</strong> Đánh giá kết quả thu hoạch bài kiểm tra (Quiz) trên Canvas của SV; kiểm tra các nội dung SV thực hiện trên Canvas từ Module 1 đến Module 4; hướng dẫn cụ thể cho các SV chưa hoàn thành; hỗ trợ tư vấn và giải đáp các khó khăn về điều kiện sinh hoạt ở môi trường mới cho SV.</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>Sáng 07/09 (Hội trường)</td>
+                                <td><strong>Buổi 4: Học cùng diễn giả nổi tiếng (chia DS lớp: 500sv/ xuất).</strong> Chuyên đề 1 <em>“Phương pháp học đại học trong thời đại AI”</em> diễn giả <strong>ThS. Phạm Thanh Tuấn</strong> - Giám đốc doanh nghiệp xã hội Bồ Công Anh – Giảng viên khởi nghiệp đổi mới sáng tạo quốc gia</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>Chiều 07/09 (Hội trường)</td>
+                                <td><strong>Buổi 4: Học cùng diễn giả nổi tiếng (chia DS lớp: 500sv/ xuất)-tt.</strong> Chuyên đề 2 <em>“Khởi nghiệp trong Kỷ nguyên số”</em> diễn giả <strong>ThS. Phan Thị Thu Hằng</strong> - Giám đốc công ty Pơ Lăng, tham gia gọi vốn thành công tại Shark Tank Việt Nam mùa 7.</td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>Sáng 08/09 (Hội trường)</td>
+                                <td><strong>Buổi 4: Học cùng diễn giả nổi tiếng (chia DS lớp: 500sv/ xuất)-tt.</strong> Chuyên đề 3 <em>“Ứng dụng AI để nâng tầm Kỹ năng thuyết trình hiệu quả”</em> diễn giả <strong>Bà Lê Thị Hải Trang</strong> - Phó Giám đốc Công ty TNHH Sự kiện Truyền thông Quang Vinh - CEO Hải Trang Academy.</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>Chiều 08/09 (Hội trường)</td>
+                                <td><strong>Buổi 5: SV Thành Công Với Chương Trình Đào Tạo Đã Chọn.</strong> Chương trình Khoa gặp gỡ tân SV (LĐK, GV, CVHT, DN và GVTG giỏi) và định hướng lộ trình đạt CĐR - tại HT Edison hoặc các Phòng học lớn theo lịch của P. QLĐT).</td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td>Sáng 09/9 (Hội trường, sảnh tầng 1)</td>
+                                <td><strong>Buổi 6+7: Lễ Khai giảng với chủ đề “Hội tụ khát vọng – Kiến tạo tương lai”.</strong> Học từ người truyền cảm hứng - <strong>MC Đoàn Nguyên Khang</strong>, Chuyên đề <em>“Người Đại học Đông Á, kết nối thông minh - tự tin hội nhập”</em> khơi mở tư duy và tiếp thêm động lực giúp SV thấu hiểu chính mình, phá bỏ giới hạn, tự tin thay đổi và vững vàng hơn trên con đường hiện thực hóa ước mơ.</td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td>Chiều 09/9 (Hội trường, sảnh tầng 1)</td>
+                                <td><strong>Buổi 8: Sinh hoạt chính trị đầu khóa.</strong><br>- An ninh trật tự, ATGT, trách nhiệm công dân (Diễn giả PA05)<br>- Thông tin tình hình thời sự trong nước và quốc tế, tình hình biển đảo (Ban Tuyên giáo và Dân vận Tỉnh ủy Đắk Lắk)</td>
+                            </tr>
+                            <tr>
+                                <td>15</td>
+                                <td>Sáng 10/09 (Phòng học)</td>
+                                <td><strong>Buổi 9: Tổng kết chương trình đầu khóa</strong></td>
+                            </tr>
+                            <tr>
+                                <td>16</td>
+                                <td>07/09/2026 - 19/12/2026</td>
+                                <td><strong>Học tập HK1 năm học 2026-2027</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         
@@ -565,16 +769,28 @@
     <script>
         function openTab(evt, tabName) {
             var i, tabcontent, tablinks;
+            
+            // Ẩn tất cả nội dung các tab
             tabcontent = document.getElementsByClassName("tab-content");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
+            
+            // Bỏ class 'active' ở tất cả các nút
             tablinks = document.getElementsByClassName("tab-link");
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
             }
+            
+            // Hiển thị tab được chọn và thêm class 'active' cho nút bấm
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
+            
+            // Tự động cuộn mượt mà lên đầu trang khi chuyển tab
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
     </script>
 
