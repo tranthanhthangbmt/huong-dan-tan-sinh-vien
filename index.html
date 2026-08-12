@@ -248,11 +248,18 @@
         }
 
         /* --- Table Styles --- */
-        table {
+        .table-responsive {
             width: 100%;
-            border-collapse: collapse;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             margin-top: 15px;
             margin-bottom: 20px;
+            border: 1px solid #ccc; /* Thêm khung cho wrapper */
+        }
+        table {
+            width: 100%;
+            min-width: 600px; /* Bắt buộc bảng phải rộng tối thiểu 600px để không bị ép chữ */
+            border-collapse: collapse;
         }
         th, td {
             border: 1px solid #ccc;
@@ -281,6 +288,77 @@
             }
             header h1 {
                 font-size: 1.3em;
+            }
+            
+            /* Giao diện Dạng Thẻ (Card Layout) cho Bảng Mốc Thời Gian trên Mobile */
+            #Tab7 .table-responsive {
+                border: none;
+                overflow-x: hidden;
+            }
+            #Tab7 table {
+                min-width: 100%;
+                border: none;
+            }
+            #Tab7 table, #Tab7 thead, #Tab7 tbody, #Tab7 th, #Tab7 td, #Tab7 tr {
+                display: block;
+            }
+            #Tab7 thead {
+                display: none; /* Ẩn tiêu đề cột ngang */
+            }
+            #Tab7 tr {
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                background-color: #fff;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+                overflow: hidden; 
+            }
+            #Tab7 td {
+                border: none;
+                border-bottom: 1px solid #f0f0f0;
+                padding: 12px 15px;
+                text-align: left;
+                position: relative;
+            }
+            #Tab7 td:last-child {
+                border-bottom: none;
+            }
+            
+            /* Định dạng dòng: Thứ tự (TT) */
+            #Tab7 td:nth-child(1) {
+                background-color: #349834;
+                color: white;
+                font-weight: bold;
+                padding: 8px 15px;
+                font-size: 1.1em;
+            }
+            #Tab7 td:nth-child(1)::before {
+                content: "Sự kiện số ";
+            }
+            
+            /* Định dạng dòng: Thời gian */
+            #Tab7 td:nth-child(2) {
+                font-weight: bold;
+                color: #d32f2f;
+                padding-top: 15px;
+            }
+            #Tab7 td:nth-child(2)::before {
+                content: "🕒 Thời gian: ";
+                color: #555;
+                font-weight: normal;
+                margin-right: 5px;
+            }
+            
+            /* Định dạng dòng: Nội dung công việc */
+            #Tab7 td:nth-child(3) {
+                padding-bottom: 15px;
+            }
+            #Tab7 td:nth-child(3)::before {
+                content: "📝 Nội dung: ";
+                display: block;
+                color: #349834;
+                font-weight: bold;
+                margin-bottom: 5px;
             }
         }
     </style>
@@ -676,6 +754,7 @@
                     <h2>Các Mốc Thời Gian Đào Tạo Khóa 26</h2>
                     <p>Chào mừng các Tân Sinh viên K26 đến với Đại học Đông Á! Dưới đây là các mốc thời gian quan trọng trong năm học 2026-2027 mà các bạn cần lưu ý:</p>
                     
+                    <div class="table-responsive">
                     <table>
                         <thead>
                             <tr>
@@ -774,6 +853,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>
