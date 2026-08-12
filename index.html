@@ -266,6 +266,23 @@
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+        
+        /* --- Mobile Responsive Header --- */
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+                padding: 15px;
+            }
+            header img.logo {
+                margin-right: 0;
+                margin-bottom: 10px;
+                width: 160px; /* Thu nhỏ logo một chút trên mobile */
+            }
+            header h1 {
+                font-size: 1.3em;
+            }
+        }
     </style>
 
     <script>
