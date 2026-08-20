@@ -15,7 +15,7 @@ Sáng 25/08/2026:
 
 Sinh viên thuộc các lớp Khối Kỹ thuật: AE26M, AE26N, IT26M, EE26M
 
-Sinh viên thuộc các lớp Khối Ngôn ngữ : CL26M, CL26N, EL26M, EL26N
+Sinh viên thuộc các lớp Khối Ngôn ngữ : CL26M, CL26N, CL26O, EL26M, EL26N
 
 Lịch khảo sát phân lớp ngoại ngữ đầu vào: (Tầng 3: Phòng 303+305)
 
@@ -41,7 +41,7 @@ Danh sách thi + phòng thi chi tiết sẽ được nhà trường gửi đư�
 
 Các trường hợp miễn khảo sát ngoại ngữ
 
-Sinh viên thuộc các chuyên ngành Ngôn ngữ Anh và Ngôn ngữ Trung: CL26M,CL26N,EL26M,EL26N
+Sinh viên thuộc các chuyên ngành Ngôn ngữ Anh và Ngôn ngữ Trung: CL26M,CL26N,CL26O,EL26M,EL26N
 
 Sinh viên đăng ký chọn học ngoại ngữ là Ngôn ngữ Trung, Nhật, hoặc Hàn.
 
